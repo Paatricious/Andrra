@@ -21,7 +21,7 @@ from PIL import Image, ImageOps
 
 SCREEN_W, SCREEN_H = 480, 800
 THUMB_W, THUMB_H = 120, 200
-ALLOWED_LICENSES = {"CC0", "CC BY", "CC BY-SA", "CC BY 3.0", "CC BY-SA 3.0", "Public Domain"}
+ALLOWED_LICENSES = {"CC0", "CC BY", "CC BY-SA", "CC BY 3.0", "CC BY-SA 3.0", "CC BY-SA 4.0", "Public Domain"}
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SOURCES_PATH = REPO_ROOT / "sources.json"
@@ -65,6 +65,78 @@ def catalog_entry(entry):
         "gray": f"wallpapers/gray/{entry['id']}.bmp",
         "thumb": f"wallpapers/thumbs/{entry['id']}.png",
     }
+
+
+def validate_entry(entry):
+    required = ("id", "title", "author", "license", "attribution", "source", "source_url")
+    missing = [k for k in required if not entry.get(k)]
+    if missing:
+        raise ValueError(f"entry {entry.get('id', '?')}: missing required fields: {missing}")
+    if not re.fullmatch(r"[a-z0-9-]+", entry["id"]):
+        raise ValueError(f"entry {entry['id']}: id must match ^[a-z0-9-]+$")
+    if entry["license"] not in ALLOWED_LICENSES:
+        raise ValueError(
+            f"entry {entry['id']}: license {entry['license']!r} not allowed "
+            f"(allowlist: {sorted(ALLOWED_LICENSES)})")
+    if entry["license"].startswith("CC BY") and not entry["attribution"].strip():
+        raise ValueError(f"entry {entry['id']}: {entry['license']} requires attribution")
+    return entry
+
+
+def load_sources(path=SOURCES_PATH):
+    if not path.exists():
+        return []
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return [validate_entry(e) for e in data.get("wallpapers", [])]
+
+
+def artifacts_exist(entry):
+    return all(p.exists() for p in (
+        BW_DIR / f"{entry['id']}.bmp",
+        GRAY_DIR / f"{entry['id']}.bmp",
+        THUMB_DIR / f"{entry['id']}.png",
+    ))
+
+
+def convert_sources(sources, force=False):
+    BW_DIR.mkdir(parents=True, exist_ok=True)
+    GRAY_DIR.mkdir(parents=True, exist_ok=True)
+    THUMB_DIR.mkdir(parents=True, exist_ok=True)
+    entries = []
+    for entry in sources:
+        if not force and artifacts_exist(entry):
+            entries.append(catalog_entry(entry))
+            continue
+        print(f"converting {entry['id']} …")
+        try:
+            convert_image(entry, BW_DIR / f"{entry['id']}.bmp",
+                          GRAY_DIR / f"{entry['id']}.bmp",
+                          THUMB_DIR / f"{entry['id']}.png")
+        except Exception as exc:  # one bad image must not kill the run
+            print(f"SKIP {entry['id']}: {exc}", file=sys.stderr)
+            continue
+        entries.append(catalog_entry(entry))
+    return entries
+
+
+def write_catalog(entries, path=CATALOG_PATH):
+    data = {"name": "X4 Wallpaper Store", "wallpapers": sorted(entries, key=lambda e: e["id"])}
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def write_third_party(sources, path=THIRD_PARTY_PATH):
+    lines = [
+        "# Third-party content",
+        "",
+        "Every wallpaper in this store is open-licensed. Source and attribution:",
+        "",
+        "| id | title | license | attribution | source |",
+        "|---|---|---|---|---|",
+    ]
+    for e in sorted(sources, key=lambda e: e["id"]):
+        lines.append(f"| {e['id']} | {e['title']} | {e['license']} | {e['attribution']} | {e['source']} |")
+    lines.append("")
+    path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def main(argv=None):

@@ -1,4 +1,5 @@
 import io
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -64,6 +65,82 @@ class ConvertImageTest(unittest.TestCase):
                 "thumb": "wallpapers/thumbs/wm-aurora-001.png",
             },
         )
+
+
+class ValidateEntryTest(unittest.TestCase):
+    def test_valid_entry_passes(self):
+        entry = {
+            "id": "wm-aurora-001", "title": "Aurora", "author": "A",
+            "license": "CC BY-SA 4.0", "attribution": "© A",
+            "source": "https://commons.wikimedia.org/wiki/File:X.jpg",
+            "source_url": "https://upload.wikimedia.org/x.jpg",
+        }
+        self.assertEqual(convert.validate_entry(entry), entry)
+
+    def test_bad_id_rejected(self):
+        entry = dict(self.valid(), id="Has Space/../evil")
+        with self.assertRaises(ValueError):
+            convert.validate_entry(entry)
+
+    def test_disallowed_license_rejected(self):
+        entry = dict(self.valid(), license="All Rights Reserved")
+        with self.assertRaises(ValueError):
+            convert.validate_entry(entry)
+
+    def test_cc_by_requires_attribution(self):
+        entry = dict(self.valid(), license="CC BY", attribution="")
+        with self.assertRaises(ValueError):
+            convert.validate_entry(entry)
+
+    @staticmethod
+    def valid():
+        return {
+            "id": "wm-aurora-001", "title": "Aurora", "author": "A",
+            "license": "CC BY-SA 4.0", "attribution": "© A",
+            "source": "https://commons.wikimedia.org/wiki/File:X.jpg",
+            "source_url": "https://upload.wikimedia.org/x.jpg",
+        }
+
+
+class SourcesAndCatalogTest(unittest.TestCase):
+    def test_convert_sources_skips_existing_artifacts(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            # Pre-create artifacts so the entry counts as already converted.
+            (tmp / "bw").mkdir(parents=True)
+            (tmp / "gray").mkdir()
+            (tmp / "thumbs").mkdir()
+            for d in ("bw", "gray"):
+                Image.new("1", (convert.SCREEN_W, convert.SCREEN_H)).save(
+                    tmp / d / "wm-aurora-001.bmp", format="BMP")
+            Image.new("L", (convert.THUMB_W, convert.THUMB_H)).save(
+                tmp / "thumbs" / "wm-aurora-001.png", format="PNG")
+
+            original_dirs = (convert.BW_DIR, convert.GRAY_DIR, convert.THUMB_DIR)
+            convert.BW_DIR, convert.GRAY_DIR, convert.THUMB_DIR = (
+                tmp / "bw", tmp / "gray", tmp / "thumbs")
+            try:
+                entries = convert.convert_sources([ValidateEntryTest.valid()], force=False)
+            finally:
+                convert.BW_DIR, convert.GRAY_DIR, convert.THUMB_DIR = original_dirs
+
+            self.assertEqual(len(entries), 1)
+            self.assertEqual(entries[0]["id"], "wm-aurora-001")
+
+    def test_write_catalog_and_third_party(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            cat = tmp / "wallpapers.json"
+            tp = tmp / "THIRD_PARTY.md"
+            entries = [convert.catalog_entry(ValidateEntryTest.valid())]
+            convert.write_catalog(entries, path=cat)
+            convert.write_third_party([ValidateEntryTest.valid()], path=tp)
+
+            data = json.loads(cat.read_text(encoding="utf-8"))
+            self.assertEqual(data["name"], "X4 Wallpaper Store")
+            self.assertEqual(data["wallpapers"][0]["id"], "wm-aurora-001")
+            self.assertIn("CC BY-SA 4.0", tp.read_text(encoding="utf-8"))
+            self.assertIn("https://commons.wikimedia.org/wiki/File:X.jpg", tp.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
