@@ -97,7 +97,7 @@ class ValidateEntryTest(unittest.TestCase):
         self.assertEqual(convert.validate_entry(entry), entry)
 
     def test_public_domain_lowercase_passes(self):
-        entry = dict(self.valid(), license="Public domain", attribution="")
+        entry = dict(self.valid(), license="Public domain", attribution="© Author")
         self.assertEqual(convert.validate_entry(entry), entry)
 
     @staticmethod

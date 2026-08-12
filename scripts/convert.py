@@ -68,7 +68,7 @@ def catalog_entry(entry):
 
 
 def validate_entry(entry):
-    required = ("id", "title", "author", "license", "source", "source_url")
+    required = ("id", "title", "author", "license", "attribution", "source", "source_url")
     missing = [k for k in required if not entry.get(k)]
     if missing:
         raise ValueError(f"entry {entry.get('id', '?')}: missing required fields: {missing}")
