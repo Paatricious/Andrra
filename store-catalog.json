@@ -1,0 +1,13 @@
+{
+  "name": "X4 Wallpaper Store",
+  "plugins": [
+    {
+      "name": "wallpaper-store",
+      "title": "Wallpaper Store",
+      "description": "Browse and download open-license e-ink wallpapers to your sleep screen.",
+      "version": "1.0.0",
+      "base": "https://raw.githubusercontent.com/<owner>/x4-wallpapers/main/plugin/",
+      "files": ["manifest.json", "plugin.js", "README.md"]
+    }
+  ]
+}

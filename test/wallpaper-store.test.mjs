@@ -170,3 +170,13 @@ test('catalog fields with HTML are escaped in rendered cards', async () => {
   assert.match(container.innerHTML, /&lt;img src=x onerror=alert\(1\)&gt;/);
   assert.doesNotMatch(container.innerHTML, /<img src=x onerror=alert\(1\)>/);
 });
+
+test('store-catalog.json satisfies the plugin-store catalog spec', async () => {
+  const catalog = JSON.parse(await readFile(new URL('../store-catalog.json', import.meta.url), 'utf8'));
+  const entry = catalog.plugins.find((p) => p.name === 'wallpaper-store');
+  assert.ok(entry, 'wallpaper-store entry missing');
+  assert.ok(entry.base.endsWith('/plugin/'));
+  assert.ok(entry.files.includes('manifest.json'));
+  assert.ok(entry.files.includes('plugin.js'));
+  assert.match(entry.base, /^https:\/\/raw\.githubusercontent\.com\//);
+});
