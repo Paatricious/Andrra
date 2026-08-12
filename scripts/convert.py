@@ -127,6 +127,10 @@ def write_catalog(entries, path=CATALOG_PATH):
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def _md_cell(value):
+    return str(value).replace("|", "\\|").replace("\n", " ").replace("\r", " ")
+
+
 def write_third_party(sources, path=THIRD_PARTY_PATH):
     lines = [
         "# Third-party content",
@@ -137,7 +141,8 @@ def write_third_party(sources, path=THIRD_PARTY_PATH):
         "|---|---|---|---|---|",
     ]
     for e in sorted(sources, key=lambda e: e["id"]):
-        lines.append(f"| {e['id']} | {e['title']} | {e['license']} | {e['attribution']} | {e['source']} |")
+        cells = [_md_cell(e[k]) for k in ("id", "title", "license", "attribution", "source")]
+        lines.append("| " + " | ".join(cells) + " |")
     lines.append("")
     path.write_text("\n".join(lines), encoding="utf-8")
 

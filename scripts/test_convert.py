@@ -1,5 +1,6 @@
 import io
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -150,6 +151,19 @@ class SourcesAndCatalogTest(unittest.TestCase):
             self.assertEqual(data["wallpapers"][0]["id"], "wm-aurora-001")
             self.assertIn("CC BY-SA 4.0", tp.read_text(encoding="utf-8"))
             self.assertIn("https://commons.wikimedia.org/wiki/File:X.jpg", tp.read_text(encoding="utf-8"))
+
+    def test_third_party_escapes_pipes_and_newlines_in_cells(self):
+        entry = dict(ValidateEntryTest.valid(), id="wm-pipe-001",
+                     title="B-17 bomber\nLeft | Right wing")
+        with tempfile.TemporaryDirectory() as tmp:
+            tp = Path(tmp) / "THIRD_PARTY.md"
+            convert.write_third_party([entry], path=tp)
+            lines = tp.read_text(encoding="utf-8").splitlines()
+            rows = lines[lines.index("|---|---|---|---|---|") + 1:]
+            self.assertEqual(len(rows), 1)  # the newline in title must not split the row
+            self.assertIn(r"Left \| Right wing", rows[0])  # pipe escaped inside the cell
+            cells = [c for c in re.split(r"(?<!\\)\|", rows[0]) if c.strip()]
+            self.assertEqual(len(cells), 5)  # exactly 5 pipe-separated columns
 
 
 class CliTest(unittest.TestCase):

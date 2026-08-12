@@ -30,10 +30,17 @@ def _slugify(title):
     return base or "wallpaper"
 
 
+def _strip_html(value):
+    return re.sub(r"<[^>]+>", "", value)
+
+
 def _strip_artist(value):
     text = re.sub(r"\[\[(?:[^\]|]+\|)?([^\]]+)\]\]", r"\1", value)  # wikilinks
-    text = re.sub(r"<[^>]+>", "", text)
-    return " ".join(text.split()).strip(" .") or "Unknown"
+    text = _strip_html(text)
+    text = " ".join(text.split()).strip(" .") or "Unknown"
+    if text.count("Unknown author") > 1 or text.endswith("or not provided"):
+        return "Unknown author"
+    return text
 
 
 def featured_pictures(limit=20):
@@ -56,7 +63,8 @@ def featured_pictures(limit=20):
         license_name = (ext.get("LicenseShortName") or {}).get("value", "").strip()
         if license_name not in ALLOWED_LICENSES:
             continue
-        title = (ext.get("ObjectName") or {}).get("value", "").strip() or page.get("title", "")
+        title = (ext.get("ObjectName") or {}).get("value", "") or page.get("title", "")
+        title = " ".join(_strip_html(title).split()).strip() or page.get("title", "")
         author = _strip_artist((ext.get("Artist") or {}).get("value", ""))
         out.append({
             "id": _slugify(page.get("title", "")),
