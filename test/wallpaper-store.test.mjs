@@ -106,3 +106,34 @@ test('catalog failure renders a status message without throwing', async () => {
   await render(container, api);
   assert.match(container.querySelector('#wp-status').textContent, /Could not load/);
 });
+
+test('clear sleep folder lists /.sleep and deletes every file', async () => {
+  const deletes = [];
+  async function fetch(url, options = {}) {
+    if (url.startsWith('/api/files')) {
+      return { ok: true, async json() { return [
+        { name: 'wm-aurora-001.bmp', isDirectory: false },
+        { name: 'notes.txt', isDirectory: false },
+      ]; } };
+    }
+    if (url === '/delete') {
+      deletes.push(new URLSearchParams(options.body).get('path'));
+      return { ok: true, async json() { return {}; } };
+    }
+    throw new Error('unexpected fetch: ' + url);
+  }
+  const api = {
+    async relay() { return { status: 200, body: JSON.stringify(CATALOG), headers: [] }; },
+    async fetchToSd() { throw new Error('unexpected'); },
+  };
+  const { render } = await loadPlugin({ fetch });
+  const container = makeContainer();
+  // Register the fixed elements BEFORE render so render()'s wiring finds them
+  // (render() sets innerHTML, then querySelector('#wp-clear')/('#wp-status')).
+  container.elements.set('#wp-clear', { onclick: null });
+  container.elements.set('#wp-status', { textContent: '' });
+  await render(container, api);
+  container.querySelector('#wp-clear').onclick();
+  await new Promise((r) => setTimeout(r, 0)); // let the async clear finish
+  assert.deepEqual(deletes, ['/.sleep/wm-aurora-001.bmp', '/.sleep/notes.txt']);
+});

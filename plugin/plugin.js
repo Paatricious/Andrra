@@ -49,7 +49,27 @@ CrossPoint.registerPlugin((container, api) => {
   }
 
   async function clearSleepFolder() {
-    // Implemented in Task 4.
+    setStatus('Clearing sleep folder…');
+    try {
+      const res = await fetch('/api/files?path=/.sleep');
+      const files = await res.json();
+      let removed = 0;
+      for (const f of files) {
+        if (f.isDirectory) continue;
+        await fetch('/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'path=' + encodeURIComponent('/.sleep/' + f.name),
+        });
+        removed += 1;
+      }
+      store.downloaded = {};
+      saveDownloaded();
+      setStatus('Cleared ' + removed + ' file(s) from the sleep folder.');
+      render();
+    } catch (err) {
+      setStatus('Clear failed: ' + err.message);
+    }
   }
 
   function card(wp) {
