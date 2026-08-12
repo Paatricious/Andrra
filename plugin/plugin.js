@@ -49,6 +49,18 @@ CrossPoint.registerPlugin((container, api) => {
     return new URL(path, CATALOG_URL).href;
   }
 
+  async function ensureSleepDir() {
+    try {
+      await fetch('/mkdir', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'path=' + encodeURIComponent('/') + '&name=.sleep',
+      });
+    } catch (e) {
+      // 400 when the folder already exists; any real failure surfaces via fetchToSd.
+    }
+  }
+
   async function download(id, style) {
     const wp = store.wallpapers.find((w) => w.id === id);
     if (!wp) return;
@@ -70,6 +82,7 @@ CrossPoint.registerPlugin((container, api) => {
     }
     setStatus('Downloading ' + wp.title + '…');
     try {
+      await ensureSleepDir();
       const res = await api.fetchToSd(url, '/.sleep/' + id + '.bmp');
       if (res && res.status && res.status >= 400) throw new Error('status ' + res.status);
       store.downloaded[id] = style;

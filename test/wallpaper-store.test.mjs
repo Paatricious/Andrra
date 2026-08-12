@@ -128,6 +128,33 @@ test('download rejects a wallpaper id that could escape /.sleep (path traversal)
   assert.match(container.querySelector('#wp-status').textContent, /invalid wallpaper id/);
 });
 
+test('download creates /.sleep before fetching', async () => {
+  const mkdirs = [];
+  async function fetch(url, options = {}) {
+    if (url === '/mkdir') {
+      mkdirs.push(options.body || '');
+      return { ok: true };
+    }
+    if (url.startsWith('/api/files')) return { ok: true, async json() { return []; } };
+    throw new Error('unexpected fetch: ' + url);
+  }
+  const downloads = [];
+  const api = {
+    async relay() { return { status: 200, body: JSON.stringify(CATALOG), headers: [] }; },
+    async fetchToSd(url, dest) { downloads.push({ url, dest }); return { status: 200 }; },
+  };
+  const { render } = await loadPlugin({ fetch });
+  const container = makeContainer();
+  await render(container, api);
+  await container.querySelectorAll('.wp-dl')[0].onclick();
+
+  assert.equal(mkdirs.length, 1);
+  assert.match(mkdirs[0], /name=\.sleep/);
+  assert.match(mkdirs[0], /path=%2F/);
+  assert.equal(downloads.length, 1);
+  assert.equal(downloads[0].dest, '/.sleep/wm-aurora-001.bmp');
+});
+
 test('download rejects absolute URLs from disallowed hosts or non-https protocols', async () => {
   const badCatalog = {
     wallpapers: [
