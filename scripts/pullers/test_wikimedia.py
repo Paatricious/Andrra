@@ -76,6 +76,47 @@ class FeaturedPicturesTest(unittest.TestCase):
             candidates = wikimedia.featured_pictures()
         self.assertEqual(candidates, [])
 
+    def test_skips_non_image_files(self):
+        page = json.loads(json.dumps(PAGE))
+        page["title"] = "File:Some Video.webm"
+        page["imageinfo"][0]["url"] = "https://upload.wikimedia.org/wikipedia/commons/v.webm"
+        with mock.patch("wikimedia.fetch_json", return_value={"query": {"pages": {"1": page}}}):
+            candidates = wikimedia.featured_pictures()
+        self.assertEqual(candidates, [])
+
+    def test_title_with_multilingual_label_dump_is_cleaned(self):
+        page = json.loads(json.dumps(PAGE))
+        page["imageinfo"][0]["extmetadata"]["ObjectName"]["value"] = (
+            'Italian: Scuola di Atene The School of Athenstitle QS:P1476,it:"Scuola di Atene "'
+            'label QS:Lit,"Scuola di Atene "label QS:Les,"La escuela de Atenas"label QS:Len,"The School of Athens"'
+        )
+        with mock.patch("wikimedia.fetch_json", return_value={"query": {"pages": {"1": page}}}):
+            candidates = wikimedia.featured_pictures()
+        self.assertEqual(candidates[0]["title"], "Italian: Scuola di Atene The School of Athens")
+
+    def test_title_with_wind_mountain_label_blob_is_cleaned(self):
+        page = json.loads(json.dumps(PAGE))
+        page["imageinfo"][0]["extmetadata"]["ObjectName"]["value"] = 'Wind Mountainlabel QS:Len,"Wind Mountain"'
+        with mock.patch("wikimedia.fetch_json", return_value={"query": {"pages": {"1": page}}}):
+            candidates = wikimedia.featured_pictures()
+        self.assertEqual(candidates[0]["title"], "Wind Mountain")
+
+    def test_title_with_filename_numbering_is_cleaned(self):
+        page = json.loads(json.dumps(PAGE))
+        page["imageinfo"][0]["extmetadata"]["ObjectName"]["value"] = "001 Chateau de Chillon and Dents du Midi Photo by Giles Laurent"
+        with mock.patch("wikimedia.fetch_json", return_value={"query": {"pages": {"1": page}}}):
+            candidates = wikimedia.featured_pictures()
+        self.assertEqual(candidates[0]["title"], "Chateau de Chillon and Dents du Midi Photo by Giles Laurent")
+
+    def test_artist_html_entities_are_decoded(self):
+        page = json.loads(json.dumps(PAGE))
+        page["imageinfo"][0]["extmetadata"]["Artist"]["value"] = (
+            "<a href='//commons.wikimedia.org/wiki/User:X'>Day &amp; Son</a>"
+        )
+        with mock.patch("wikimedia.fetch_json", return_value={"query": {"pages": {"1": page}}}):
+            candidates = wikimedia.featured_pictures()
+        self.assertEqual(candidates[0]["author"], "Day & Son")
+
 
 if __name__ == "__main__":
     unittest.main()

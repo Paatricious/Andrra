@@ -108,7 +108,7 @@ CrossPoint.registerPlugin((container, api) => {
     const saved = store.downloaded[wp.id];
     const label = saved ? 'Saved (' + (saved === 'gray' ? 'grayscale' : '1-bit') + ')' : 'Download';
     return '<div class="wp-card">'
-      + '<img class="wp-thumb" src="' + escapeHtml(wp.thumb) + '" alt="' + escapeHtml(wp.title) + '">'
+      + '<img class="wp-thumb" src="' + escapeHtml(resolveArtifactUrl(wp.thumb)) + '" alt="' + escapeHtml(wp.title) + '">'
       + '<div class="wp-meta">'
       + '<div class="wp-title">' + escapeHtml(wp.title) + '</div>'
       + '<div class="wp-author">' + escapeHtml(wp.author) + ' · ' + escapeHtml(wp.license) + '</div>'

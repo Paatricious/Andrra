@@ -51,7 +51,7 @@ test('render fetches the catalog through the relay and lists wallpapers', async 
   assert.match(container.innerHTML, /Aurora over Norway/);
   assert.match(container.innerHTML, /Photo Author/);
   assert.match(container.innerHTML, /CC BY-SA 4\.0/);
-  assert.match(container.innerHTML, /wallpapers\/thumbs\/wm-aurora-001\.png/);
+  assert.match(container.innerHTML, /src="https:\/\/raw\.githubusercontent\.com\/[^"]+wallpapers\/thumbs\/wm-aurora-001\.png"/);
   assert.match(container.innerHTML, /data-id="wm-aurora-001" data-style="bw"/);
   assert.match(container.innerHTML, /data-id="wm-aurora-001" data-style="gray"/);
 });
