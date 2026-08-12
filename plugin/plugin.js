@@ -57,9 +57,9 @@ CrossPoint.registerPlugin((container, api) => {
       setStatus('Download failed: invalid wallpaper id.');
       return;
     }
-    const url = resolveArtifactUrl(style === 'gray' ? wp.gray : wp.bw);
-    let u;
+    let u, url;
     try {
+      url = resolveArtifactUrl(style === 'gray' ? wp.gray : wp.bw);
       u = new URL(url);
     } catch (e) {
       setStatus('Download failed: invalid download URL.');

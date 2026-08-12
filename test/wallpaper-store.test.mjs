@@ -168,6 +168,31 @@ test('download rejects absolute URLs from disallowed hosts or non-https protocol
   assert.match(container.querySelector('#wp-status').textContent, /host not allowed/);
 });
 
+test('download rejects a malformed artifact URL without throwing', async () => {
+  const badCatalog = {
+    wallpapers: [{
+      id: 'bad-url',
+      title: 'Bad URL',
+      author: 'Author',
+      license: 'MIT',
+      bw: 'https://exa mple.com/payload.bmp', // space in host -> new URL throws
+      gray: 'https://exa mple.com/payload-gray.bmp',
+      thumb: 'thumb.png',
+    }],
+  };
+  const downloads = [];
+  const api = {
+    async relay() { return { status: 200, body: JSON.stringify(badCatalog), headers: [] }; },
+    async fetchToSd(url, dest) { downloads.push({ url, dest }); return { status: 200 }; },
+  };
+  const { render } = await loadPlugin();
+  const container = makeContainer();
+  await render(container, api);
+  await container.querySelectorAll('.wp-dl')[0].onclick();
+  assert.equal(downloads.length, 0);
+  assert.match(container.querySelector('#wp-status').textContent, /invalid download URL/);
+});
+
 test('catalog failure renders a status message without throwing', async () => {
   const { render } = await loadPlugin();
   const container = makeContainer();
