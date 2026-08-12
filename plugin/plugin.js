@@ -31,6 +31,15 @@ CrossPoint.registerPlugin((container, api) => {
     localStorage.setItem(DOWNLOAD_KEY, JSON.stringify(store.downloaded));
   }
 
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   async function download(id, style) {
     const wp = store.wallpapers.find((w) => w.id === id);
     if (!wp) return;
@@ -41,8 +50,8 @@ CrossPoint.registerPlugin((container, api) => {
       if (res && res.status && res.status >= 400) throw new Error('status ' + res.status);
       store.downloaded[id] = style;
       saveDownloaded();
-      setStatus('Saved ' + wp.title + ' — it will appear on the sleep screen.');
       render();
+      setStatus('Saved ' + wp.title + ' — it will appear on the sleep screen.');
     } catch (err) {
       setStatus('Download failed: ' + err.message);
     }
@@ -65,8 +74,8 @@ CrossPoint.registerPlugin((container, api) => {
       }
       store.downloaded = {};
       saveDownloaded();
-      setStatus('Cleared ' + removed + ' file(s) from the sleep folder.');
       render();
+      setStatus('Cleared ' + removed + ' file(s) from the sleep folder.');
     } catch (err) {
       setStatus('Clear failed: ' + err.message);
     }
@@ -76,13 +85,13 @@ CrossPoint.registerPlugin((container, api) => {
     const saved = store.downloaded[wp.id];
     const label = saved ? 'Saved (' + (saved === 'gray' ? 'grayscale' : '1-bit') + ')' : 'Download';
     return '<div class="wp-card">'
-      + '<img class="wp-thumb" src="' + wp.thumb + '" alt="' + wp.title + '">'
+      + '<img class="wp-thumb" src="' + escapeHtml(wp.thumb) + '" alt="' + escapeHtml(wp.title) + '">'
       + '<div class="wp-meta">'
-      + '<div class="wp-title">' + wp.title + '</div>'
-      + '<div class="wp-author">' + wp.author + ' · ' + wp.license + '</div>'
+      + '<div class="wp-title">' + escapeHtml(wp.title) + '</div>'
+      + '<div class="wp-author">' + escapeHtml(wp.author) + ' · ' + escapeHtml(wp.license) + '</div>'
       + '<div class="wp-actions">'
-      + '<button class="wp-dl" data-id="' + wp.id + '" data-style="bw">1-bit</button>'
-      + '<button class="wp-dl" data-id="' + wp.id + '" data-style="gray">Grayscale</button>'
+      + '<button class="wp-dl" data-id="' + escapeHtml(wp.id) + '" data-style="bw">1-bit</button>'
+      + '<button class="wp-dl" data-id="' + escapeHtml(wp.id) + '" data-style="gray">Grayscale</button>'
       + '<span class="wp-saved">' + label + '</span>'
       + '</div></div></div>';
   }

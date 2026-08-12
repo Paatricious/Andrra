@@ -122,11 +122,19 @@ test('clear sleep folder lists /.sleep and deletes every file', async () => {
     }
     throw new Error('unexpected fetch: ' + url);
   }
+  const storage = new Map();
+  storage.set('x4wallpaper.downloaded', JSON.stringify({ 'wm-aurora-001': 'bw' }));
   const api = {
     async relay() { return { status: 200, body: JSON.stringify(CATALOG), headers: [] }; },
     async fetchToSd() { throw new Error('unexpected'); },
   };
-  const { render } = await loadPlugin({ fetch });
+  const { render } = await loadPlugin({
+    fetch,
+    localStorage: {
+      getItem: (k) => storage.get(k) ?? null,
+      setItem: (k, v) => storage.set(k, v),
+    },
+  });
   const container = makeContainer();
   // Register the fixed elements BEFORE render so render()'s wiring finds them
   // (render() sets innerHTML, then querySelector('#wp-clear')/('#wp-status')).
@@ -136,4 +144,29 @@ test('clear sleep folder lists /.sleep and deletes every file', async () => {
   container.querySelector('#wp-clear').onclick();
   await new Promise((r) => setTimeout(r, 0)); // let the async clear finish
   assert.deepEqual(deletes, ['/.sleep/wm-aurora-001.bmp', '/.sleep/notes.txt']);
+  assert.match(container.querySelector('#wp-status').textContent, /Cleared 2 file/);
+  assert.deepEqual(JSON.parse(storage.get('x4wallpaper.downloaded')), {});
+});
+
+test('catalog fields with HTML are escaped in rendered cards', async () => {
+  const xssCatalog = {
+    wallpapers: [{
+      id: 'xss-1',
+      title: '<img src=x onerror=alert(1)>',
+      author: 'Author',
+      license: 'MIT',
+      bw: 'bw.bmp',
+      gray: 'gray.bmp',
+      thumb: 'thumb.png',
+    }],
+  };
+  const api = {
+    async relay() { return { status: 200, body: JSON.stringify(xssCatalog), headers: [] }; },
+    async fetchToSd() { throw new Error('unexpected'); },
+  };
+  const { render } = await loadPlugin();
+  const container = makeContainer();
+  await render(container, api);
+  assert.match(container.innerHTML, /&lt;img src=x onerror=alert\(1\)&gt;/);
+  assert.doesNotMatch(container.innerHTML, /<img src=x onerror=alert\(1\)>/);
 });
