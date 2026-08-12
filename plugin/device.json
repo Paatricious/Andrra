@@ -1,0 +1,22 @@
+{
+  "title": "Andrra",
+  "description": "The dream — sleep-screen wallpapers for your e-reader.",
+  "author": "Paatricious",
+  "version": "1.0.0",
+  "browse": {
+    "format": "json",
+    "url": "https://raw.githubusercontent.com/Paatricious/Andrra/main/wallpapers.json",
+    "items": "wallpapers",
+    "page_size": 8,
+    "fields": {
+      "title": "title",
+      "author": "author",
+      "id": "id"
+    }
+  },
+  "download": {
+    "url": "https://raw.githubusercontent.com/Paatricious/Andrra/main/wallpapers/bw/{id}.bmp",
+    "dest_dir": "/.sleep",
+    "filename": "{id}.bmp"
+  }
+}

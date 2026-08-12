@@ -5,9 +5,10 @@
       "name": "andrra",
       "title": "Andrra",
       "description": "The dream — open-license sleep-screen wallpapers for your e-reader.",
+      "author": "Paatricious",
       "version": "1.0.0",
       "base": "https://raw.githubusercontent.com/Paatricious/Andrra/main/plugin/",
-      "files": ["manifest.json", "plugin.js", "README.md"]
+      "files": ["manifest.json", "device.json", "plugin.js", "README.md"]
     }
   ]
 }

@@ -297,6 +297,18 @@ test('catalog fields with HTML are escaped in rendered cards', async () => {
   assert.doesNotMatch(container.innerHTML, /<img src=x onerror=alert\(1\)>/);
 });
 
+test('device.json declares a valid on-device screen', async () => {
+  const d = JSON.parse(await readFile(new URL('../plugin/device.json', import.meta.url), 'utf8'));
+  assert.equal(d.title, 'Andrra');
+  assert.equal(d.version, '1.0.0');
+  assert.equal(d.browse.items, 'wallpapers');
+  assert.equal(d.browse.fields.id, 'id');
+  assert.match(d.browse.url, /wallpapers\.json$/);
+  assert.equal(d.download.dest_dir, '/.sleep');
+  assert.match(d.download.url, /\{id\}/);
+  assert.match(d.download.filename, /\{id\}\.bmp$/);
+});
+
 test('store-catalog.json satisfies the plugin-store catalog spec', async () => {
   const catalog = JSON.parse(await readFile(new URL('../store-catalog.json', import.meta.url), 'utf8'));
   const entry = catalog.plugins.find((p) => p.name === 'andrra');
