@@ -57,10 +57,22 @@ def convert_image(entry, out_bw, out_gray, out_thumb):
     return hashlib.sha256(data).hexdigest()
 
 
+def _short_title(title, limit=32):
+    if len(title) <= limit:
+        return title
+    cut = title[:limit]
+    idx = cut.rfind(" ")
+    if idx > limit * 0.6:
+        cut = cut[:idx]
+    return cut.rstrip(" ,.;:-") + "…"
+
+
 def catalog_entry(entry):
+    title = entry["title"]
     return {
         "id": entry["id"],
-        "title": entry["title"],
+        "title": title,
+        "short_title": _short_title(title),
         "author": entry["author"],
         "license": entry["license"],
         "attribution": entry["attribution"],

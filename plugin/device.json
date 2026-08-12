@@ -9,10 +9,9 @@
     "items": "wallpapers",
     "page_size": 8,
     "fields": {
-      "title": "title",
+      "title": "short_title",
       "author": "author",
-      "id": "id",
-      "thumbnail": "thumb"
+      "id": "id"
     }
   },
   "download": {

@@ -60,13 +60,23 @@ class ConvertImageTest(unittest.TestCase):
         self.assertEqual(
             got,
             {
-                "id": "wm-aurora-001", "title": "Aurora", "author": "A",
+                "id": "wm-aurora-001", "title": "Aurora", "short_title": "Aurora",
+                "author": "A",
                 "license": "CC0", "attribution": "", "category": "landscape",
                 "bw": "wallpapers/bw/wm-aurora-001.bmp",
                 "gray": "wallpapers/gray/wm-aurora-001.bmp",
                 "thumb": "wallpapers/thumbs/wm-aurora-001.png",
             },
         )
+
+    def test_short_title_truncates_at_word_boundary(self):
+        long_title = "A photograph made from a B-17 Flying Fortress attacking the CAM ball-bearing plant in Paris."
+        self.assertEqual(
+            convert._short_title(long_title),
+            "A photograph made from a B-17…",
+        )
+        self.assertLessEqual(len(convert._short_title(long_title)), 33)
+        self.assertEqual(convert._short_title("Short title"), "Short title")
 
 
 class ValidateEntryTest(unittest.TestCase):
