@@ -37,11 +37,12 @@ def featured_pictures(limit=20):
     params = {
         "action": "query",
         "format": "json",
-        "generator": "featuredpic",
-        "gprop": "imageinfo",
-        "iiprop": "url|extmetadata",
+        "generator": "categorymembers",
+        "gcmtitle": "Category:Featured pictures on Wikimedia Commons",
+        "gcmtype": "file",
+        "gcmlimit": str(limit),
         "prop": "imageinfo",
-        "gilimit": str(limit),
+        "iiprop": "url|extmetadata",
     }
     url = _API + "?" + urlencode(params)
     data = fetch_json(url)

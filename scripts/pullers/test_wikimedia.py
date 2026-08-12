@@ -32,6 +32,11 @@ class FeaturedPicturesTest(unittest.TestCase):
             candidates = wikimedia.featured_pictures(limit=20)
 
         fj.assert_called_once()
+        url = fj.call_args.args[0]
+        self.assertIn("generator=categorymembers", url)
+        self.assertIn("gcmtitle=Category%3AFeatured", url)
+        self.assertIn("gcmtype=file", url)
+        self.assertIn("gcmlimit=20", url)
         self.assertEqual(len(candidates), 1)
         got = candidates[0]
         self.assertEqual(got["id"], "aurora-over-norway")
