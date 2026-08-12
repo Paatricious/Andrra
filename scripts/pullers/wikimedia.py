@@ -8,14 +8,17 @@ stdlib (urllib) so the pipeline has no HTTP dependency.
 import json
 import re
 from urllib.parse import urlencode
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 ALLOWED_LICENSES = {"CC0", "CC BY", "CC BY-SA", "CC BY 3.0", "CC BY-SA 3.0", "CC BY 4.0", "CC BY-SA 4.0", "Public Domain", "Public domain"}
 _API = "https://commons.wikimedia.org/w/api.php"
 
 
 def fetch_json(url):
-    with urlopen(url, timeout=60) as resp:
+    req = Request(url, headers={
+        "User-Agent": "x4-wallpapers/1.0 (https://github.com/x4-wallpapers/x4-wallpapers; wallpaper store pipeline)",
+    })
+    with urlopen(req, timeout=60) as resp:
         return json.load(resp)
 
 

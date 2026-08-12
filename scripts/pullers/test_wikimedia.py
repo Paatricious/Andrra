@@ -26,7 +26,29 @@ API_RESPONSE = {
 }
 
 
+class _FakeResp:
+    def read(self):
+        return b'{"ok": true}'
+
+
+class _FakeCM:
+    def __enter__(self):
+        return _FakeResp()
+
+    def __exit__(self, *args):
+        return False
+
+
 class FeaturedPicturesTest(unittest.TestCase):
+    def test_fetch_json_sends_descriptive_user_agent(self):
+        with mock.patch("wikimedia.urlopen", return_value=_FakeCM()) as uo:
+            data = wikimedia.fetch_json("https://example.invalid/")
+
+        uo.assert_called_once()
+        req = uo.call_args.args[0]
+        self.assertIn("x4-wallpapers", req.get_header("User-agent"))
+        self.assertEqual(data, {"ok": True})
+
     def test_returns_license_filtered_candidates(self):
         with mock.patch("wikimedia.fetch_json", return_value=API_RESPONSE) as fj:
             candidates = wikimedia.featured_pictures(limit=20)
