@@ -1,20 +1,24 @@
-# X4 Wallpaper Store
+# Andrra
 
-Open-license wallpapers for the Xteink X4 Pro (CrossPoint firmware) sleep
-screen, delivered by a CrossPoint browser plugin.
+*Andërra për ekranin e fjetur* — "dreams for your sleeping screen."
+
+**Andrra** (Gheg Albanian, pronounced **AHN-drah**) means **"the dream."** It's a
+wallpaper store for CrossPoint e-readers (Xteink X4 Pro): a browser plugin
+that downloads open-license art into your device's `/.sleep/` folder, where
+the firmware rotates it every time the reader drifts off.
 
 ## Install (plugin)
 
-**Via Plugin Store:** add the store catalog URL (this repo's
-`store-catalog.json`) in the reader web UI → Settings → Plugin Store, then
-install "Wallpaper Store".
+**Via Plugin Store:** add this repo's store catalog URL
+(`https://raw.githubusercontent.com/Paatricious/Andrra/main/store-catalog.json`)
+in the reader web UI → Settings → Plugin Store, then install **Andrra**.
 
-**By hand:** copy the `plugin/` folder to `/.crosspoint/plugins/wallpaper-store/`
-on the SD card (or `/plugins/wallpaper-store/`). Reconnect to the device web UI.
+**By hand:** copy the `plugin/` folder to `/.crosspoint/plugins/andrra/`
+on the SD card (or `/plugins/andrra/`). Reconnect to the device web UI.
 
 ## Use
 
-1. Open Settings → **Wallpaper Store** in the device web UI.
+1. Open Settings → **Andrra** in the device web UI.
 2. Pick a wallpaper, choose **1-bit** or **Grayscale**, tap the button.
    The device downloads it to `/.sleep/<id>.bmp`.
 3. On the reader: **Settings → Sleep screen → Custom** (or **Cover + Custom**).
@@ -36,7 +40,11 @@ A scheduled GitHub Action runs `scripts/convert.py`:
 
 ## Licensing
 
-Only open-license images (CC0 / CC BY / CC BY-SA / public domain) are
-accepted — enforced by the pipeline's license allowlist. Every wallpaper
-carries source, license, and attribution in `wallpapers.json` and
-`THIRD_PARTY.md`. The plugin shows author and license on each card.
+Two layers:
+
+- **The code** (plugin, pipeline, tests) is **MIT** — see `LICENSE`.
+- **The wallpapers are NOT covered by the repo license.** Each image keeps
+  its own open license (CC0 / CC BY / CC BY-SA / public domain), enforced by
+  the pipeline's allowlist and recorded per-image with source and
+  attribution in `wallpapers.json` and `THIRD_PARTY.md`. The plugin shows
+  author and license on each card.

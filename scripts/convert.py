@@ -1,4 +1,5 @@
-"""Wallpaper conversion pipeline for the X4 Wallpaper Store.
+"""Wallpaper conversion pipeline for Andrra (sleep-screen wallpapers for
+CrossPoint e-readers).
 
 Converts open-license images into the e-ink BMP formats the CrossPoint
 firmware's Bitmap parser accepts:
@@ -34,7 +35,7 @@ THUMB_DIR = REPO_ROOT / "wallpapers" / "thumbs"
 
 def fetch_bytes(url):
     req = Request(url, headers={
-        "User-Agent": "x4-wallpapers/1.0 (https://github.com/x4-wallpapers/x4-wallpapers; wallpaper store pipeline)",
+        "User-Agent": "Andrra/1.0 (https://github.com/Paatricious/Andrra; sleep-screen wallpaper store)",
     })
     with urlopen(req, timeout=60) as resp:
         return resp.read()
@@ -123,7 +124,7 @@ def convert_sources(sources, force=False):
 
 
 def write_catalog(entries, path=CATALOG_PATH):
-    data = {"name": "X4 Wallpaper Store", "wallpapers": sorted(entries, key=lambda e: e["id"])}
+    data = {"name": "Andrra", "wallpapers": sorted(entries, key=lambda e: e["id"])}
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 

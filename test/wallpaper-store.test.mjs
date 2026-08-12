@@ -4,7 +4,7 @@ import test from 'node:test';
 import { loadPlugin, makeContainer } from './helpers.js';
 
 const CATALOG = {
-  name: 'X4 Wallpaper Store',
+  name: 'Andrra',
   wallpapers: [{
     id: 'wm-aurora-001',
     title: 'Aurora over Norway',
@@ -270,8 +270,8 @@ test('catalog fields with HTML are escaped in rendered cards', async () => {
 
 test('store-catalog.json satisfies the plugin-store catalog spec', async () => {
   const catalog = JSON.parse(await readFile(new URL('../store-catalog.json', import.meta.url), 'utf8'));
-  const entry = catalog.plugins.find((p) => p.name === 'wallpaper-store');
-  assert.ok(entry, 'wallpaper-store entry missing');
+  const entry = catalog.plugins.find((p) => p.name === 'andrra');
+  assert.ok(entry, 'andrra entry missing');
   assert.ok(entry.base.endsWith('/plugin/'));
   assert.ok(entry.files.includes('manifest.json'));
   assert.ok(entry.files.includes('plugin.js'));

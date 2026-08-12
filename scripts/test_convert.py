@@ -147,7 +147,7 @@ class SourcesAndCatalogTest(unittest.TestCase):
             convert.write_third_party([ValidateEntryTest.valid()], path=tp)
 
             data = json.loads(cat.read_text(encoding="utf-8"))
-            self.assertEqual(data["name"], "X4 Wallpaper Store")
+            self.assertEqual(data["name"], "Andrra")
             self.assertEqual(data["wallpapers"][0]["id"], "wm-aurora-001")
             self.assertIn("CC BY-SA 4.0", tp.read_text(encoding="utf-8"))
             self.assertIn("https://commons.wikimedia.org/wiki/File:X.jpg", tp.read_text(encoding="utf-8"))
@@ -218,7 +218,7 @@ class FetchBytesTest(unittest.TestCase):
 
         uo.assert_called_once()
         req = uo.call_args.args[0]
-        self.assertIn("x4-wallpapers", req.get_header("User-agent"))
+        self.assertIn("Andrra", req.get_header("User-agent"))
         self.assertEqual(data, b"fake-image-bytes")
 
 

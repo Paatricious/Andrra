@@ -16,7 +16,7 @@ _API = "https://commons.wikimedia.org/w/api.php"
 
 def fetch_json(url):
     req = Request(url, headers={
-        "User-Agent": "x4-wallpapers/1.0 (https://github.com/x4-wallpapers/x4-wallpapers; wallpaper store pipeline)",
+        "User-Agent": "Andrra/1.0 (https://github.com/Paatricious/Andrra; sleep-screen wallpaper store)",
     })
     with urlopen(req, timeout=60) as resp:
         return json.load(resp)

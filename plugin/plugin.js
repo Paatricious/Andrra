@@ -1,13 +1,11 @@
-// X4 Wallpaper Store — CrossPoint Settings plugin.
-// Catalog URL: raw wallpapers.json in the x4-wallpapers repo.
-// If the repo has a remote, derive it from `git remote get-url origin`
-// (https://github.com/<owner>/x4-wallpapers.git ->
-//  https://raw.githubusercontent.com/<owner>/x4-wallpapers/main/wallpapers.json).
-// Update this constant before publishing if it was left as the fallback.
-const CATALOG_URL = 'https://raw.githubusercontent.com/REPLACE-OWNER/x4-wallpapers/main/wallpapers.json';
+// Andrra — CrossPoint Settings plugin. Sleep-screen wallpapers for e-readers.
+// "Andrra" (Gheg Albanian, pronounced AHN-drah) means "the dream".
+// Catalog URL: raw wallpapers.json in the Andrra repo
+// (https://github.com/Paatricious/Andrra).
+const CATALOG_URL = 'https://raw.githubusercontent.com/Paatricious/Andrra/main/wallpapers.json';
 
 // Only these hosts may serve wallpaper downloads. The catalog comes from
-// the x4-wallpapers repo; anything else is rejected (malicious catalog).
+// the Andrra repo; anything else is rejected (malicious catalog).
 const ALLOWED_DOWNLOAD_HOSTS = ['raw.githubusercontent.com'];
 const ID_RE = /^[a-z0-9-]+$/;
 

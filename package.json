@@ -1,7 +1,7 @@
 {
-  "name": "x4-wallpapers",
+  "name": "andrra",
   "private": true,
-  "description": "CrossPoint Wallpaper Store — plugin + conversion pipeline for the Xteink X4 Pro sleep screen",
+  "description": "Andrra — sleep-screen wallpapers for CrossPoint e-readers (plugin + conversion pipeline)",
   "scripts": {
     "test": "node --test test/*.test.mjs"
   }

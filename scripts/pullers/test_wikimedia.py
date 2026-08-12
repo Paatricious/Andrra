@@ -46,7 +46,7 @@ class FeaturedPicturesTest(unittest.TestCase):
 
         uo.assert_called_once()
         req = uo.call_args.args[0]
-        self.assertIn("x4-wallpapers", req.get_header("User-agent"))
+        self.assertIn("Andrra", req.get_header("User-agent"))
         self.assertEqual(data, {"ok": True})
 
     def test_returns_license_filtered_candidates(self):
