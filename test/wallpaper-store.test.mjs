@@ -303,6 +303,7 @@ test('device.json declares a valid on-device screen', async () => {
   assert.equal(d.version, '1.0.0');
   assert.equal(d.browse.items, 'wallpapers');
   assert.equal(d.browse.fields.id, 'id');
+  assert.equal(d.browse.fields.thumbnail, 'thumb');
   assert.match(d.browse.url, /wallpapers\.json$/);
   assert.equal(d.download.dest_dir, '/.sleep');
   assert.match(d.download.url, /\{id\}/);

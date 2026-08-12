@@ -11,7 +11,8 @@
     "fields": {
       "title": "title",
       "author": "author",
-      "id": "id"
+      "id": "id",
+      "thumbnail": "thumb"
     }
   },
   "download": {
