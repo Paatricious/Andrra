@@ -151,5 +151,37 @@ class SourcesAndCatalogTest(unittest.TestCase):
             self.assertIn("https://commons.wikimedia.org/wiki/File:X.jpg", tp.read_text(encoding="utf-8"))
 
 
+class CliTest(unittest.TestCase):
+    def test_convert_cli_converts_and_writes_catalog(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            (tmp / "bw").mkdir(parents=True)
+            (tmp / "gray").mkdir()
+            (tmp / "thumbs").mkdir()
+            src = tmp / "sources.json"
+            src.write_text(json.dumps({"wallpapers": [ValidateEntryTest.valid()]}), encoding="utf-8")
+            cat = tmp / "wallpapers.json"
+            tp = tmp / "THIRD_PARTY.md"
+
+            buf = io.BytesIO()
+            Image.new("RGB", (600, 900)).save(buf, format="JPEG")
+            original = (convert.SOURCES_PATH, convert.CATALOG_PATH, convert.THIRD_PARTY_PATH,
+                        convert.BW_DIR, convert.GRAY_DIR, convert.THUMB_DIR, convert.fetch_bytes)
+            (convert.SOURCES_PATH, convert.CATALOG_PATH, convert.THIRD_PARTY_PATH,
+             convert.BW_DIR, convert.GRAY_DIR, convert.THUMB_DIR) = (
+                src, cat, tp, tmp / "bw", tmp / "gray", tmp / "thumbs")
+            convert.fetch_bytes = lambda url: buf.getvalue()
+            try:
+                rc = convert.main(["convert"])
+            finally:
+                (convert.SOURCES_PATH, convert.CATALOG_PATH, convert.THIRD_PARTY_PATH,
+                 convert.BW_DIR, convert.GRAY_DIR, convert.THUMB_DIR, convert.fetch_bytes) = original
+
+            self.assertEqual(rc, 0)
+            data = json.loads(cat.read_text(encoding="utf-8"))
+            self.assertEqual(data["wallpapers"][0]["id"], "wm-aurora-001")
+            self.assertTrue((tmp / "bw" / "wm-aurora-001.bmp").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

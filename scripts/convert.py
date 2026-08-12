@@ -139,13 +139,54 @@ def write_third_party(sources, path=THIRD_PARTY_PATH):
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
+def merge_candidates(candidates, sources):
+    """Add puller candidates that aren't already in sources (by id)."""
+    existing = {e["id"] for e in sources}
+    added = []
+    for cand in candidates:
+        if cand["id"] in existing:
+            continue
+        try:
+            validate_entry(cand)
+        except ValueError as exc:
+            print(f"SKIP candidate {cand.get('id')}: {exc}", file=sys.stderr)
+            continue
+        sources.append(cand)
+        existing.add(cand["id"])
+        added.append(cand["id"])
+    return added
+
+
 def main(argv=None):
     args = argv if argv is not None else sys.argv[1:]
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--entry", help="convert only this entry id")
-    parser.add_argument("--force", action="store_true", help="re-convert even if artifacts exist")
-    parser.parse_args(args)
-    print("convert core ready; catalog/sources wiring lands in Task 6")
+    sub = parser.add_subparsers(dest="command", required=True)
+    pull = sub.add_parser("pull", help="merge new candidates into sources.json")
+    pull.add_argument("--limit", type=int, default=20)
+    convert_p = sub.add_parser("convert", help="convert sources without artifacts")
+    convert_p.add_argument("--force", action="store_true")
+    convert_p.add_argument("--entry", help="convert only this entry id")
+    sub.add_parser("update", parents=[convert_p], add_help=False, help="alias of convert")
+    cli = parser.parse_args(args)
+
+    if cli.command == "pull":
+        from pullers import wikimedia
+        sources = load_sources(SOURCES_PATH)
+        candidates = wikimedia.featured_pictures(limit=cli.limit)
+        added = merge_candidates(candidates, sources)
+        SOURCES_PATH.write_text(
+            json.dumps({"wallpapers": sources}, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8")
+        print(f"pull: {len(added)} new candidate(s) added")
+        return 0
+
+    sources = load_sources(SOURCES_PATH)
+    if cli.entry:
+        sources = [e for e in sources if e["id"] == cli.entry]
+    entries = convert_sources(sources, force=cli.force)
+    write_catalog(entries, CATALOG_PATH)
+    write_third_party(sources, THIRD_PARTY_PATH)
+    print(f"convert: {len(entries)} wallpaper(s) in catalog")
     return 0
 
 
