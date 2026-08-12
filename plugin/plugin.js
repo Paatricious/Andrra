@@ -14,7 +14,8 @@ CrossPoint.registerPlugin((container, api) => {
 
   const store = {
     wallpapers: [],
-    downloaded: {}, // id -> 'bw' | 'gray'
+    downloaded: {}, // id -> 'bw' | 'gray' (what's on the device)
+    selected: {},   // id -> 'bw' | 'gray' (what Download will fetch)
   };
 
   function setStatus(text) {
@@ -106,16 +107,20 @@ CrossPoint.registerPlugin((container, api) => {
 
   function card(wp) {
     const saved = store.downloaded[wp.id];
-    const label = saved ? 'Saved (' + (saved === 'gray' ? 'grayscale' : '1-bit') + ')' : 'Download';
+    const sel = store.selected[wp.id] || 'bw';
+    const savedLabel = saved
+      ? '<span class="wp-saved">Saved (' + (saved === 'gray' ? 'grayscale' : '1-bit') + ')</span>'
+      : '';
     return '<div class="wp-card">'
       + '<img class="wp-thumb" src="' + escapeHtml(resolveArtifactUrl(wp.thumb)) + '" alt="' + escapeHtml(wp.title) + '">'
       + '<div class="wp-meta">'
       + '<div class="wp-title">' + escapeHtml(wp.title) + '</div>'
       + '<div class="wp-author">' + escapeHtml(wp.author) + ' · ' + escapeHtml(wp.license) + '</div>'
       + '<div class="wp-actions">'
-      + '<button class="wp-dl" data-id="' + escapeHtml(wp.id) + '" data-style="bw">1-bit</button>'
-      + '<button class="wp-dl" data-id="' + escapeHtml(wp.id) + '" data-style="gray">Grayscale</button>'
-      + '<span class="wp-saved">' + label + '</span>'
+      + '<button class="wp-style btn-small' + (sel === 'bw' ? ' on' : '') + '" data-id="' + escapeHtml(wp.id) + '" data-style="bw">1-bit</button>'
+      + '<button class="wp-style btn-small' + (sel === 'gray' ? ' on' : '') + '" data-id="' + escapeHtml(wp.id) + '" data-style="gray">Grayscale</button>'
+      + '<button class="wp-dl btn-small btn-add" data-id="' + escapeHtml(wp.id) + '">Download</button>'
+      + savedLabel
       + '</div></div></div>';
   }
 
@@ -127,8 +132,14 @@ CrossPoint.registerPlugin((container, api) => {
       + '<button id="wp-clear">Clear sleep folder</button>'
       + '<p class="wp-hint">Tip: set Settings → Sleep screen → Custom to see wallpapers.</p>'
       + '</div>';
+    container.querySelectorAll('.wp-style').forEach((btn) => {
+      btn.onclick = () => {
+        store.selected[btn.dataset.id] = btn.dataset.style;
+        render();
+      };
+    });
     container.querySelectorAll('.wp-dl').forEach((btn) => {
-      btn.onclick = () => download(btn.dataset.id, btn.dataset.style);
+      btn.onclick = () => download(btn.dataset.id, store.selected[btn.dataset.id] || 'bw');
     });
     const clearBtn = container.querySelector('#wp-clear');
     if (clearBtn) clearBtn.onclick = clearSleepFolder;

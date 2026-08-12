@@ -79,10 +79,11 @@ test('download sends the chosen variant to /.sleep/<id>.bmp and records state', 
   const catalogUrl = source.match(/CATALOG_URL\s*=\s*'([^']+)'/)[1];
   const container = makeContainer();
   await render(container, api);
-  const buttons = container.querySelectorAll('.wp-dl');
+  const dl = container.querySelectorAll('.wp-dl');
+  const styles = container.querySelectorAll('.wp-style');
 
-  const bw = buttons.find((b) => b.dataset.style === 'bw');
-  await bw.onclick();
+  // Default selection is 1-bit; the Download button fetches it.
+  await dl[0].onclick();
 
   assert.equal(downloads.length, 1);
   // Relative catalog paths resolve to absolute URLs against the catalog URL.
@@ -92,8 +93,10 @@ test('download sends the chosen variant to /.sleep/<id>.bmp and records state', 
   assert.equal(JSON.parse(storage.get('x4wallpaper.downloaded'))['wm-aurora-001'], 'bw');
   assert.match(container.innerHTML, /Saved \(1-bit\)/);
 
-  const gray = buttons.find((b) => b.dataset.style === 'gray');
-  await gray.onclick();
+  // Select Grayscale, then Download again — the gray variant is fetched.
+  styles.find((b) => b.dataset.style === 'gray').onclick();
+  await dl[0].onclick();
+  assert.equal(downloads.length, 2);
   assert.equal(downloads[1].url, new URL(CATALOG.wallpapers[0].gray, catalogUrl).href);
   assert.ok(downloads[1].url.startsWith('https://raw.githubusercontent.com/'));
   assert.equal(downloads[1].dest, '/.sleep/wm-aurora-001.bmp');
@@ -157,13 +160,12 @@ test('download rejects absolute URLs from disallowed hosts or non-https protocol
   const container = makeContainer();
   await render(container, api);
   const buttons = container.querySelectorAll('.wp-dl');
-  const bwButtons = buttons.filter((b) => b.dataset.style === 'bw');
 
-  await bwButtons[0].onclick(); // evil.example.com
+  await buttons[0].onclick(); // evil.example.com (bw default)
   assert.equal(downloads.length, 0);
   assert.match(container.querySelector('#wp-status').textContent, /host not allowed/);
 
-  await bwButtons[1].onclick(); // http://raw.githubusercontent.com
+  await buttons[1].onclick(); // http://raw.githubusercontent.com (bw default)
   assert.equal(downloads.length, 0);
   assert.match(container.querySelector('#wp-status').textContent, /host not allowed/);
 });

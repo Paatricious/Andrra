@@ -43,6 +43,7 @@ export async function loadPlugin(globals = {}) {
 export function makeContainer() {
   const registry = new Map();
   let dlButtons = [];
+  let styleButtons = [];
   let statusEl = null;
   const container = {
     innerHTML: '',
@@ -59,20 +60,30 @@ export function makeContainer() {
       return null;
     },
     querySelectorAll(sel) {
-      if (sel !== '.wp-dl') return [];
+      if (sel !== '.wp-dl' && sel !== '.wp-style') return [];
       // Parse the current innerHTML into live button objects. Cache by
-      // id:style pair so render()'s wiring and the test's clicks hit the
-      // same objects even after a re-render.
-      const re = /data-id="([^"]+)" data-style="([^"]+)"/g;
+      // identity so render()'s wiring and the test's clicks hit the same
+      // objects even after a re-render.
+      const cache = sel === '.wp-dl' ? dlButtons : styleButtons;
+      const re = sel === '.wp-dl'
+        ? /class="[^"]*\bwp-dl\b[^"]*" data-id="([^"]+)"/g
+        : /class="[^"]*\bwp-style\b[^"]*" data-id="([^"]+)" data-style="([^"]+)"/g;
       let m;
       const fresh = [];
       while ((m = re.exec(this.innerHTML))) {
-        let btn = dlButtons.find((b) => b.dataset.id === m[1] && b.dataset.style === m[2]);
-        if (!btn) btn = { dataset: { id: m[1], style: m[2] }, onclick: null };
+        let btn;
+        if (sel === '.wp-dl') {
+          btn = cache.find((b) => b.dataset.id === m[1]);
+          if (!btn) btn = { dataset: { id: m[1] }, onclick: null };
+        } else {
+          btn = cache.find((b) => b.dataset.id === m[1] && b.dataset.style === m[2]);
+          if (!btn) btn = { dataset: { id: m[1], style: m[2] }, onclick: null };
+        }
         fresh.push(btn);
       }
-      dlButtons = fresh;
-      return dlButtons;
+      if (sel === '.wp-dl') dlButtons = fresh;
+      else styleButtons = fresh;
+      return fresh;
     },
   };
   return container;
