@@ -2,6 +2,28 @@
   "name": "Andrra",
   "wallpapers": [
     {
+      "id": "001-chateau-de-chillon-and-dents-du-midi-photo-by-giles-laurent",
+      "title": "001 Chateau de Chillon and Dents du Midi Photo by Giles Laurent",
+      "author": "Giles Laurent",
+      "license": "CC BY-SA 4.0",
+      "attribution": "© Giles Laurent, CC BY-SA 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/001-chateau-de-chillon-and-dents-du-midi-photo-by-giles-laurent.bmp",
+      "gray": "wallpapers/gray/001-chateau-de-chillon-and-dents-du-midi-photo-by-giles-laurent.bmp",
+      "thumb": "wallpapers/thumbs/001-chateau-de-chillon-and-dents-du-midi-photo-by-giles-laurent.png"
+    },
+    {
+      "id": "001-golden-jackal-and-azureum-flowers-in-jim-corbett-national-park-photo-by-giles-laurent",
+      "title": "001 Golden jackal and azureum flowers in Jim Corbett National Park Photo by Giles Laurent",
+      "author": "Giles Laurent",
+      "license": "CC BY-SA 4.0",
+      "attribution": "© Giles Laurent, CC BY-SA 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/001-golden-jackal-and-azureum-flowers-in-jim-corbett-national-park-photo-by-giles-laurent.bmp",
+      "gray": "wallpapers/gray/001-golden-jackal-and-azureum-flowers-in-jim-corbett-national-park-photo-by-giles-laurent.bmp",
+      "thumb": "wallpapers/thumbs/001-golden-jackal-and-azureum-flowers-in-jim-corbett-national-park-photo-by-giles-laurent.png"
+    },
+    {
       "id": "a-mother-how-odd-gordon-ross-lccn2011648850-restored",
       "title": "\"A mother! How odd!\" - Gordon Ross. LCCN2011648850-restored",
       "author": "Ross, Gordon, 1873-1946, artist",
@@ -22,6 +44,17 @@
       "bw": "wallpapers/bw/a-sure-horse-for-the-first-money-lccn2002695764-restored.bmp",
       "gray": "wallpapers/gray/a-sure-horse-for-the-first-money-lccn2002695764-restored.bmp",
       "thumb": "wallpapers/thumbs/a-sure-horse-for-the-first-money-lccn2002695764-restored.png"
+    },
+    {
+      "id": "castres-notre-dame-de-la-plat-l-orgue-de-tribune",
+      "title": "(Castres) Notre-Dame-de-la-Platé - L'orgue de tribune",
+      "author": "Didier Descouens",
+      "license": "CC BY-SA 4.0",
+      "attribution": "© Didier Descouens, CC BY-SA 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/castres-notre-dame-de-la-plat-l-orgue-de-tribune.bmp",
+      "gray": "wallpapers/gray/castres-notre-dame-de-la-plat-l-orgue-de-tribune.bmp",
+      "thumb": "wallpapers/thumbs/castres-notre-dame-de-la-plat-l-orgue-de-tribune.png"
     },
     {
       "id": "everything-is-going-to-be-alright-artwork-christchurch-art-gallery-christchurch-new-zealand",
@@ -46,6 +79,50 @@
       "thumb": "wallpapers/thumbs/horas-de-chumbo-by-rui-chafes-parque-das-na-es-lisbon-portugal-julesvernex2-2.png"
     },
     {
+      "id": "map-of-the-complete-island-of-cuba-loc-2003623399",
+      "title": "(Map of the complete island of Cuba). LOC 2003623399",
+      "author": "Vinckeboons, Joan",
+      "license": "Public domain",
+      "attribution": "© Vinckeboons, Joan, Public domain",
+      "category": "general",
+      "bw": "wallpapers/bw/map-of-the-complete-island-of-cuba-loc-2003623399.bmp",
+      "gray": "wallpapers/gray/map-of-the-complete-island-of-cuba-loc-2003623399.bmp",
+      "thumb": "wallpapers/thumbs/map-of-the-complete-island-of-cuba-loc-2003623399.png"
+    },
+    {
+      "id": "mhnt-aiolopus-strepens-female",
+      "title": "(MHNT) Aiolopus strepens female",
+      "author": "Didier Descouens",
+      "license": "CC BY-SA 4.0",
+      "attribution": "© Didier Descouens, CC BY-SA 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/mhnt-aiolopus-strepens-female.bmp",
+      "gray": "wallpapers/gray/mhnt-aiolopus-strepens-female.bmp",
+      "thumb": "wallpapers/thumbs/mhnt-aiolopus-strepens-female.png"
+    },
+    {
+      "id": "one-of-the-wards-in-the-hospital-at-scutari-wellcome-m0007724-restoration-cropped",
+      "title": "'One of the wards in the hospital at Scutari (Turkey)'. (Crimean War 1856)",
+      "author": "William Simpson (artist, 1823–1899) E. Walker (lithographer, lifespan unknown, working for Day &amp; Son) Publishers: Paul and Dominic Colnaghi, London; Goupil &amp; Cie, Paris; Otto Wiegel, Leipzig. Restoration by Adam Cuerden",
+      "license": "CC BY 4.0",
+      "attribution": "© William Simpson (artist, 1823–1899) E. Walker (lithographer, lifespan unknown, working for Day &amp; Son) Publishers: Paul and Dominic Colnaghi, London; Goupil &amp; Cie, Paris; Otto Wiegel, Leipzig. Restoration by Adam Cuerden, CC BY 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/one-of-the-wards-in-the-hospital-at-scutari-wellcome-m0007724-restoration-cropped.bmp",
+      "gray": "wallpapers/gray/one-of-the-wards-in-the-hospital-at-scutari-wellcome-m0007724-restoration-cropped.bmp",
+      "thumb": "wallpapers/thumbs/one-of-the-wards-in-the-hospital-at-scutari-wellcome-m0007724-restoration-cropped.png"
+    },
+    {
+      "id": "orgueil-l-glise-saint-ferr-ol-voute-du-choeur",
+      "title": "(Orgueil) - L'Église Saint-Ferréol - Voute du choeur",
+      "author": "Didier Descouens",
+      "license": "CC BY-SA 4.0",
+      "attribution": "© Didier Descouens, CC BY-SA 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/orgueil-l-glise-saint-ferr-ol-voute-du-choeur.bmp",
+      "gray": "wallpapers/gray/orgueil-l-glise-saint-ferr-ol-voute-du-choeur.bmp",
+      "thumb": "wallpapers/thumbs/orgueil-l-glise-saint-ferr-ol-voute-du-choeur.png"
+    },
+    {
       "id": "photograph-made-from-b-17-flying-fortress-of-the-8th-aaf-bomber-command-on-31-dec-when-they-attacked-the-vital-cam-bal-nara-535712",
       "title": "\"Photograph made from B-17 Flying Fortress of the 8th AAF Bomber Command on 31 Dec. when they attacked the vital CAM ball- bearing plant and the nearby Hispano Suiza aircraft engine repair depot in Paris.\"",
       "author": "Unknown author",
@@ -55,6 +132,83 @@
       "bw": "wallpapers/bw/photograph-made-from-b-17-flying-fortress-of-the-8th-aaf-bomber-command-on-31-dec-when-they-attacked-the-vital-cam-bal-nara-535712.bmp",
       "gray": "wallpapers/gray/photograph-made-from-b-17-flying-fortress-of-the-8th-aaf-bomber-command-on-31-dec-when-they-attacked-the-vital-cam-bal-nara-535712.bmp",
       "thumb": "wallpapers/thumbs/photograph-made-from-b-17-flying-fortress-of-the-8th-aaf-bomber-command-on-31-dec-when-they-attacked-the-vital-cam-bal-nara-535712.png"
+    },
+    {
+      "id": "the-bandit-of-point-loma-a-stirring-western-showing-how-the-light-house-keeper-captured-a-marauding-desperado-restored",
+      "title": "\"The Bandit of Point Loma - a stirring western showing how the light-house keeper captured a marauding desperado\" restored",
+      "author": "Miscellaneous Items in High Demand, PPOC, Library of Congress",
+      "license": "Public domain",
+      "attribution": "© Miscellaneous Items in High Demand, PPOC, Library of Congress, Public domain",
+      "category": "general",
+      "bw": "wallpapers/bw/the-bandit-of-point-loma-a-stirring-western-showing-how-the-light-house-keeper-captured-a-marauding-desperado-restored.bmp",
+      "gray": "wallpapers/gray/the-bandit-of-point-loma-a-stirring-western-showing-how-the-light-house-keeper-captured-a-marauding-desperado-restored.bmp",
+      "thumb": "wallpapers/thumbs/the-bandit-of-point-loma-a-stirring-western-showing-how-the-light-house-keeper-captured-a-marauding-desperado-restored.png"
+    },
+    {
+      "id": "the-school-of-athens-by-raffaello-sanzio-da-urbino",
+      "title": "Italian: Scuola di Atene The School of Athenstitle QS:P1476,it:\"Scuola di Atene \"label QS:Lit,\"Scuola di Atene \"label QS:Les,\"La escuela de Atenas\"label QS:Lis,\"Skólinn í Aþenu\"label QS:Lms,\"Sekolah Athens\"label QS:Lbg,\"Атинската школа\"label QS:Lro,\"Școala din Atena\"label QS:Lzh-hk,\"雅典學院\"label QS:Lsk,\"Aténska škola\"label QS:Loc,\"Escòla d'Atèna\"label QS:Lzh-hant,\"雅典學院\"label QS:Lzh-cn,\"雅典学院\"label QS:Lko,\"아테네 학당\"label QS:Leo,\"La Lernejo de Ateno\"label QS:Lcs,\"Athénská škola\"label QS:Lbs,\"Atinska škola\"label QS:Lbn,\"স্কুওলা দি আতেনে\"label QS:Lfr,\"L'École d'Athènes\"label QS:Ljv,\"Sekolah Aténa\"label QS:Lhr,\"Atenska škola\"label QS:Lvi,\"Trường Athena\"label QS:Llv,\"Atēnu skola\"label QS:Lsr,\"Атинска школа\"label QS:Lzh-sg,\"雅典学院\"label QS:Lnb,\"Skolen i Athen\"label QS:Laz,\"Afina məktəbi\"label QS:Lckb,\"قوتابخانەی ئەتینا\"label QS:Len,\"The School of Athens\"label QS:Lar,\"مدرسة أثينا\"label QS:Lhu,\"Az athéni iskola\"label QS:Leu,\"Atenasko Eskola\"label QS:Lru,\"Афинская школа\"label QS:Lcy,\"Ysgol Athen\"label QS:Lsq,\"Shkolla e Athinës\"label QS:Lfa,\"مکتب آتن\"label QS:Lzh,\"雅典學院\"label QS:Lda,\"Skolen i Athen\"label QS:Lka,\"ათენის სკოლა\"label QS:Lja,\"アテナイの学堂\"label QS:Lia,\"Le Schola de Athenas\"label QS:Larz,\"مدرسة اثينا (لوحه)\"label QS:Lhe,\"אסכולת אתונה\"label QS:Lla,\"Schola Atheniensis\"label QS:Lfi,\"Ateenan koulu\"label QS:Lhyw,\"Աթենքի դպրոց\"label QS:Lta,\"ஏதென்சு கல்விக்கூடம்\"label QS:Let,\"Ateena kool\"label QS:Lsr-el,\"Atinska škola\"label QS:Lel,\"Η Σχολή των Αθηνών\"label QS:Luk,\"Афінська школа\"label QS:Ltr,\"Atina Okulu\"label QS:Lhy,\"Աթենքի դպրոց\"label QS:Lpt,\"Escola de Atenas\"label QS:Lmt,\"L-Iskola ta' Ateni\"label QS:Lbe,\"Афінская школа\"label QS:Lsr-ec,\"Атинска школа\"label QS:Llt,\"Atėnų mokykla\"label QS:Lsl,\"Atenska šola\"label QS:Ltl,\"Paaralan ng Atenas\"label QS:Lde,\"Die Schule von Athen\"label QS:Lsh,\"Atenska škola\"label QS:Lth,\"โรงเรียนแห่งเอเธนส์\"label QS:Lpl,\"Szkoła Ateńska\"label QS:Lsv,\"Skolan i Aten\"label QS:Lnl,\"School van Athene\"label QS:Lid,\"Mazhab Athena\"label QS:Lmk,\"Атинската школа\"label QS:Lsco,\"The Schuil o Athens\"label QS:Lnew,\"एथेन्सया ब्वनेकुथि\"label QS:Lca,\"L'escola d'Atenes\"label QS:Lzh-hans,\"雅典学院\"label QS:Lzh-tw,\"雅典學院\"",
+      "author": "Raphael",
+      "license": "Public domain",
+      "attribution": "© Raphael, Public domain",
+      "category": "general",
+      "bw": "wallpapers/bw/the-school-of-athens-by-raffaello-sanzio-da-urbino.bmp",
+      "gray": "wallpapers/gray/the-school-of-athens-by-raffaello-sanzio-da-urbino.bmp",
+      "thumb": "wallpapers/thumbs/the-school-of-athens-by-raffaello-sanzio-da-urbino.png"
+    },
+    {
+      "id": "toulouse-enyo-gorgon-mhnt-cut-2010-0-527-maripasoula-guyane-france-female-dorsal",
+      "title": "(Toulouse) Enyo gorgon MHNT CUT 2010 0 527 - Maripasoula, Guyane France - female dorsal",
+      "author": "Didier Descouens",
+      "license": "CC BY-SA 4.0",
+      "attribution": "© Didier Descouens, CC BY-SA 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/toulouse-enyo-gorgon-mhnt-cut-2010-0-527-maripasoula-guyane-france-female-dorsal.bmp",
+      "gray": "wallpapers/gray/toulouse-enyo-gorgon-mhnt-cut-2010-0-527-maripasoula-guyane-france-female-dorsal.bmp",
+      "thumb": "wallpapers/thumbs/toulouse-enyo-gorgon-mhnt-cut-2010-0-527-maripasoula-guyane-france-female-dorsal.png"
+    },
+    {
+      "id": "toulouse-enyo-gorgon-mhnt-cut-2010-0-527-maripasoula-guyane-france-female-ventral",
+      "title": "(Toulouse) Enyo gorgon MHNT CUT 2010 0 527 - Maripasoula, Guyane France - female ventral",
+      "author": "Didier Descouens",
+      "license": "CC BY-SA 4.0",
+      "attribution": "© Didier Descouens, CC BY-SA 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/toulouse-enyo-gorgon-mhnt-cut-2010-0-527-maripasoula-guyane-france-female-ventral.bmp",
+      "gray": "wallpapers/gray/toulouse-enyo-gorgon-mhnt-cut-2010-0-527-maripasoula-guyane-france-female-ventral.bmp",
+      "thumb": "wallpapers/thumbs/toulouse-enyo-gorgon-mhnt-cut-2010-0-527-maripasoula-guyane-france-female-ventral.png"
+    },
+    {
+      "id": "venice-bocca-di-leone-in-the-doge-s-palace",
+      "title": "(Venice) Bocca di Leone in the Doge's Palace",
+      "author": "Didier Descouens",
+      "license": "CC BY-SA 4.0",
+      "attribution": "© Didier Descouens, CC BY-SA 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/venice-bocca-di-leone-in-the-doge-s-palace.bmp",
+      "gray": "wallpapers/gray/venice-bocca-di-leone-in-the-doge-s-palace.bmp",
+      "thumb": "wallpapers/thumbs/venice-bocca-di-leone-in-the-doge-s-palace.png"
+    },
+    {
+      "id": "wind-mountain-columbia-r-nara-102278851-page-1",
+      "title": "Wind Mountainlabel QS:Len,\"Wind Mountain\"",
+      "author": "James Madison Alden",
+      "license": "Public domain",
+      "attribution": "© James Madison Alden, Public domain",
+      "category": "general",
+      "bw": "wallpapers/bw/wind-mountain-columbia-r-nara-102278851-page-1.bmp",
+      "gray": "wallpapers/gray/wind-mountain-columbia-r-nara-102278851-page-1.bmp",
+      "thumb": "wallpapers/thumbs/wind-mountain-columbia-r-nara-102278851-page-1.png"
+    },
+    {
+      "id": "zerynthia-polyxena",
+      "title": "\"Zerynthia polyxena\"",
+      "author": "Maurizio Carlini",
+      "license": "CC BY-SA 4.0",
+      "attribution": "© Maurizio Carlini, CC BY-SA 4.0",
+      "category": "general",
+      "bw": "wallpapers/bw/zerynthia-polyxena.bmp",
+      "gray": "wallpapers/gray/zerynthia-polyxena.bmp",
+      "thumb": "wallpapers/thumbs/zerynthia-polyxena.png"
     }
   ]
 }
