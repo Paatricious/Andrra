@@ -1,0 +1,8 @@
+{
+  "name": "x4-wallpapers",
+  "private": true,
+  "description": "CrossPoint Wallpaper Store — plugin + conversion pipeline for the Xteink X4 Pro sleep screen",
+  "scripts": {
+    "test": "node --test test/"
+  }
+}
