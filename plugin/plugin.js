@@ -7,6 +7,8 @@
 const CATALOG_URL = 'https://raw.githubusercontent.com/REPLACE-OWNER/x4-wallpapers/main/wallpapers.json';
 
 CrossPoint.registerPlugin((container, api) => {
+  const DOWNLOAD_KEY = 'x4wallpaper.downloaded';
+
   const store = {
     wallpapers: [],
     downloaded: {}, // id -> 'bw' | 'gray'
@@ -15,6 +17,39 @@ CrossPoint.registerPlugin((container, api) => {
   function setStatus(text) {
     const node = container.querySelector('#wp-status');
     if (node) node.textContent = text;
+  }
+
+  function loadDownloaded() {
+    try {
+      store.downloaded = JSON.parse(localStorage.getItem(DOWNLOAD_KEY) || '{}');
+    } catch (e) {
+      store.downloaded = {};
+    }
+  }
+
+  function saveDownloaded() {
+    localStorage.setItem(DOWNLOAD_KEY, JSON.stringify(store.downloaded));
+  }
+
+  async function download(id, style) {
+    const wp = store.wallpapers.find((w) => w.id === id);
+    if (!wp) return;
+    const url = style === 'gray' ? wp.gray : wp.bw;
+    setStatus('Downloading ' + wp.title + '…');
+    try {
+      const res = await api.fetchToSd(url, '/.sleep/' + id + '.bmp');
+      if (res && res.status && res.status >= 400) throw new Error('status ' + res.status);
+      store.downloaded[id] = style;
+      saveDownloaded();
+      setStatus('Saved ' + wp.title + ' — it will appear on the sleep screen.');
+      render();
+    } catch (err) {
+      setStatus('Download failed: ' + err.message);
+    }
+  }
+
+  async function clearSleepFolder() {
+    // Implemented in Task 4.
   }
 
   function card(wp) {
@@ -40,9 +75,15 @@ CrossPoint.registerPlugin((container, api) => {
       + '<button id="wp-clear">Clear sleep folder</button>'
       + '<p class="wp-hint">Tip: set Settings → Sleep screen → Custom to see wallpapers.</p>'
       + '</div>';
+    container.querySelectorAll('.wp-dl').forEach((btn) => {
+      btn.onclick = () => download(btn.dataset.id, btn.dataset.style);
+    });
+    const clearBtn = container.querySelector('#wp-clear');
+    if (clearBtn) clearBtn.onclick = clearSleepFolder;
   }
 
   async function init() {
+    loadDownloaded();
     render();
     try {
       const res = await api.relay('GET', CATALOG_URL);

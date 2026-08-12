@@ -43,13 +43,21 @@ export async function loadPlugin(globals = {}) {
 export function makeContainer() {
   const registry = new Map();
   let dlButtons = [];
+  let statusEl = null;
   const container = {
     innerHTML: '',
     elements: {
       set(id, el) { registry.set(id, el); },
       get(id) { return registry.get(id) || null; },
     },
-    querySelector(sel) { return registry.get(sel) || null; },
+    querySelector(sel) {
+      if (registry.has(sel)) return registry.get(sel);
+      if (sel === '#wp-status') {
+        if (!statusEl) statusEl = { textContent: '' };
+        return statusEl;
+      }
+      return null;
+    },
     querySelectorAll(sel) {
       if (sel !== '.wp-dl') return [];
       // Parse the current innerHTML into live button objects. Cache by

@@ -55,3 +55,54 @@ test('render fetches the catalog through the relay and lists wallpapers', async 
   assert.match(container.innerHTML, /data-id="wm-aurora-001" data-style="bw"/);
   assert.match(container.innerHTML, /data-id="wm-aurora-001" data-style="gray"/);
 });
+
+test('download sends the chosen variant to /.sleep/<id>.bmp and records state', async () => {
+  const relays = [];
+  const downloads = [];
+  const storage = new Map();
+  const api = {
+    async relay(method, url) {
+      relays.push({ method, url });
+      return { status: 200, body: JSON.stringify(CATALOG), headers: [] };
+    },
+    async fetchToSd(url, dest, headers) {
+      downloads.push({ url, dest, headers });
+      return { status: 200, bytes: 1234 };
+    },
+  };
+  const { render } = await loadPlugin({
+    localStorage: {
+      getItem: (k) => storage.get(k) ?? null,
+      setItem: (k, v) => storage.set(k, v),
+    },
+  });
+  const container = makeContainer();
+  await render(container, api);
+  const buttons = container.querySelectorAll('.wp-dl');
+
+  const bw = buttons.find((b) => b.dataset.style === 'bw');
+  await bw.onclick();
+
+  assert.equal(downloads.length, 1);
+  assert.equal(downloads[0].url, CATALOG.wallpapers[0].bw);
+  assert.equal(downloads[0].dest, '/.sleep/wm-aurora-001.bmp');
+  assert.equal(JSON.parse(storage.get('x4wallpaper.downloaded'))['wm-aurora-001'], 'bw');
+  assert.match(container.innerHTML, /Saved \(1-bit\)/);
+
+  const gray = buttons.find((b) => b.dataset.style === 'gray');
+  await gray.onclick();
+  assert.equal(downloads[1].url, CATALOG.wallpapers[0].gray);
+  assert.equal(downloads[1].dest, '/.sleep/wm-aurora-001.bmp');
+  assert.match(container.innerHTML, /Saved \(grayscale\)/);
+});
+
+test('catalog failure renders a status message without throwing', async () => {
+  const { render } = await loadPlugin();
+  const container = makeContainer();
+  const api = {
+    async relay() { throw new Error('network down'); },
+    async fetchToSd() { throw new Error('unexpected'); },
+  };
+  await render(container, api);
+  assert.match(container.querySelector('#wp-status').textContent, /Could not load/);
+});
