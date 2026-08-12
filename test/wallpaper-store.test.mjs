@@ -70,12 +70,13 @@ test('download sends the chosen variant to /.sleep/<id>.bmp and records state', 
       return { status: 200, bytes: 1234 };
     },
   };
-  const { render } = await loadPlugin({
+  const { render, source } = await loadPlugin({
     localStorage: {
       getItem: (k) => storage.get(k) ?? null,
       setItem: (k, v) => storage.set(k, v),
     },
   });
+  const catalogUrl = source.match(/CATALOG_URL\s*=\s*'([^']+)'/)[1];
   const container = makeContainer();
   await render(container, api);
   const buttons = container.querySelectorAll('.wp-dl');
@@ -84,16 +85,87 @@ test('download sends the chosen variant to /.sleep/<id>.bmp and records state', 
   await bw.onclick();
 
   assert.equal(downloads.length, 1);
-  assert.equal(downloads[0].url, CATALOG.wallpapers[0].bw);
+  // Relative catalog paths resolve to absolute URLs against the catalog URL.
+  assert.equal(downloads[0].url, new URL(CATALOG.wallpapers[0].bw, catalogUrl).href);
+  assert.ok(downloads[0].url.startsWith('https://raw.githubusercontent.com/'));
   assert.equal(downloads[0].dest, '/.sleep/wm-aurora-001.bmp');
   assert.equal(JSON.parse(storage.get('x4wallpaper.downloaded'))['wm-aurora-001'], 'bw');
   assert.match(container.innerHTML, /Saved \(1-bit\)/);
 
   const gray = buttons.find((b) => b.dataset.style === 'gray');
   await gray.onclick();
-  assert.equal(downloads[1].url, CATALOG.wallpapers[0].gray);
+  assert.equal(downloads[1].url, new URL(CATALOG.wallpapers[0].gray, catalogUrl).href);
+  assert.ok(downloads[1].url.startsWith('https://raw.githubusercontent.com/'));
   assert.equal(downloads[1].dest, '/.sleep/wm-aurora-001.bmp');
   assert.match(container.innerHTML, /Saved \(grayscale\)/);
+});
+
+test('download rejects a wallpaper id that could escape /.sleep (path traversal)', async () => {
+  const evilCatalog = {
+    wallpapers: [{
+      id: '../../evil',
+      title: 'Evil',
+      author: 'Author',
+      license: 'MIT',
+      bw: 'wallpapers/bw/evil.bmp',
+      gray: 'wallpapers/gray/evil.bmp',
+      thumb: 'thumb.png',
+    }],
+  };
+  const downloads = [];
+  const api = {
+    async relay() { return { status: 200, body: JSON.stringify(evilCatalog), headers: [] }; },
+    async fetchToSd(url, dest) { downloads.push({ url, dest }); return { status: 200 }; },
+  };
+  const { render } = await loadPlugin();
+  const container = makeContainer();
+  await render(container, api);
+  await container.querySelectorAll('.wp-dl')[0].onclick();
+  assert.equal(downloads.length, 0);
+  assert.match(container.querySelector('#wp-status').textContent, /invalid wallpaper id/);
+});
+
+test('download rejects absolute URLs from disallowed hosts or non-https protocols', async () => {
+  const badCatalog = {
+    wallpapers: [
+      {
+        id: 'evil-host',
+        title: 'Evil Host',
+        author: 'Author',
+        license: 'MIT',
+        bw: 'https://evil.example.com/payload.bmp',
+        gray: 'https://evil.example.com/payload-gray.bmp',
+        thumb: 'thumb.png',
+      },
+      {
+        id: 'http-only',
+        title: 'HTTP Only',
+        author: 'Author',
+        license: 'MIT',
+        bw: 'http://raw.githubusercontent.com/x.bmp',
+        gray: 'http://raw.githubusercontent.com/y.bmp',
+        thumb: 'thumb.png',
+      },
+    ],
+  };
+  const downloads = [];
+  const api = {
+    async relay() { return { status: 200, body: JSON.stringify(badCatalog), headers: [] }; },
+    async fetchToSd(url, dest) { downloads.push({ url, dest }); return { status: 200 }; },
+  };
+  const { render } = await loadPlugin();
+  const container = makeContainer();
+  await render(container, api);
+  const buttons = container.querySelectorAll('.wp-dl');
+  const bwButtons = buttons.filter((b) => b.dataset.style === 'bw');
+
+  await bwButtons[0].onclick(); // evil.example.com
+  assert.equal(downloads.length, 0);
+  assert.match(container.querySelector('#wp-status').textContent, /host not allowed/);
+
+  await bwButtons[1].onclick(); // http://raw.githubusercontent.com
+  assert.equal(downloads.length, 0);
+  assert.match(container.querySelector('#wp-status').textContent, /host not allowed/);
 });
 
 test('catalog failure renders a status message without throwing', async () => {

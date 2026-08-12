@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install Pillow
-        run: pip install Pillow
+        run: pip install Pillow==12.2.0
       - name: Run pipeline
         run: |
           cd scripts

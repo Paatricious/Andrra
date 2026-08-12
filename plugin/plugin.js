@@ -6,6 +6,11 @@
 // Update this constant before publishing if it was left as the fallback.
 const CATALOG_URL = 'https://raw.githubusercontent.com/REPLACE-OWNER/x4-wallpapers/main/wallpapers.json';
 
+// Only these hosts may serve wallpaper downloads. The catalog comes from
+// the x4-wallpapers repo; anything else is rejected (malicious catalog).
+const ALLOWED_DOWNLOAD_HOSTS = ['raw.githubusercontent.com'];
+const ID_RE = /^[a-z0-9-]+$/;
+
 CrossPoint.registerPlugin((container, api) => {
   const DOWNLOAD_KEY = 'x4wallpaper.downloaded';
 
@@ -40,10 +45,30 @@ CrossPoint.registerPlugin((container, api) => {
       .replace(/'/g, '&#39;');
   }
 
+  function resolveArtifactUrl(path) {
+    // Catalog paths are relative to the catalog file; resolve against it.
+    return new URL(path, CATALOG_URL).href;
+  }
+
   async function download(id, style) {
     const wp = store.wallpapers.find((w) => w.id === id);
     if (!wp) return;
-    const url = style === 'gray' ? wp.gray : wp.bw;
+    if (!ID_RE.test(id)) {
+      setStatus('Download failed: invalid wallpaper id.');
+      return;
+    }
+    const url = resolveArtifactUrl(style === 'gray' ? wp.gray : wp.bw);
+    let u;
+    try {
+      u = new URL(url);
+    } catch (e) {
+      setStatus('Download failed: invalid download URL.');
+      return;
+    }
+    if (u.protocol !== 'https:' || !ALLOWED_DOWNLOAD_HOSTS.includes(u.hostname)) {
+      setStatus('Download failed: download host not allowed.');
+      return;
+    }
     setStatus('Downloading ' + wp.title + '…');
     try {
       const res = await api.fetchToSd(url, '/.sleep/' + id + '.bmp');
