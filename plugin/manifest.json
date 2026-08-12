@@ -1,4 +1,5 @@
 {
   "title": "Andrra",
-  "mount": "settings"
+  "mount": "settings",
+  "version": "1.0.0"
 }
