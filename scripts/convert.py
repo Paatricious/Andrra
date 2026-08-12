@@ -21,7 +21,7 @@ from PIL import Image, ImageOps
 
 SCREEN_W, SCREEN_H = 480, 800
 THUMB_W, THUMB_H = 120, 200
-ALLOWED_LICENSES = {"CC0", "CC BY", "CC BY-SA", "CC BY 3.0", "CC BY-SA 3.0", "CC BY-SA 4.0", "Public Domain"}
+ALLOWED_LICENSES = {"CC0", "CC BY", "CC BY-SA", "CC BY 3.0", "CC BY-SA 3.0", "CC BY 4.0", "CC BY-SA 4.0", "Public Domain", "Public domain"}
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SOURCES_PATH = REPO_ROOT / "sources.json"
@@ -68,7 +68,7 @@ def catalog_entry(entry):
 
 
 def validate_entry(entry):
-    required = ("id", "title", "author", "license", "attribution", "source", "source_url")
+    required = ("id", "title", "author", "license", "source", "source_url")
     missing = [k for k in required if not entry.get(k)]
     if missing:
         raise ValueError(f"entry {entry.get('id', '?')}: missing required fields: {missing}")

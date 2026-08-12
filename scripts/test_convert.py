@@ -92,6 +92,14 @@ class ValidateEntryTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert.validate_entry(entry)
 
+    def test_cc_by_40_passes(self):
+        entry = dict(self.valid(), license="CC BY 4.0", attribution="© A")
+        self.assertEqual(convert.validate_entry(entry), entry)
+
+    def test_public_domain_lowercase_passes(self):
+        entry = dict(self.valid(), license="Public domain", attribution="")
+        self.assertEqual(convert.validate_entry(entry), entry)
+
     @staticmethod
     def valid():
         return {
