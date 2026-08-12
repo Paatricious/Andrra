@@ -3,6 +3,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 from PIL import Image
 
@@ -181,6 +182,30 @@ class CliTest(unittest.TestCase):
             data = json.loads(cat.read_text(encoding="utf-8"))
             self.assertEqual(data["wallpapers"][0]["id"], "wm-aurora-001")
             self.assertTrue((tmp / "bw" / "wm-aurora-001.bmp").exists())
+
+
+class _FakeResp:
+    def read(self):
+        return b"fake-image-bytes"
+
+
+class _FakeCM:
+    def __enter__(self):
+        return _FakeResp()
+
+    def __exit__(self, *args):
+        return False
+
+
+class FetchBytesTest(unittest.TestCase):
+    def test_fetch_bytes_sends_descriptive_user_agent(self):
+        with mock.patch("convert.urlopen", return_value=_FakeCM()) as uo:
+            data = convert.fetch_bytes("https://example.invalid/x.jpg")
+
+        uo.assert_called_once()
+        req = uo.call_args.args[0]
+        self.assertIn("x4-wallpapers", req.get_header("User-agent"))
+        self.assertEqual(data, b"fake-image-bytes")
 
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 from PIL import Image, ImageOps
 
@@ -33,7 +33,10 @@ THUMB_DIR = REPO_ROOT / "wallpapers" / "thumbs"
 
 
 def fetch_bytes(url):
-    with urlopen(url, timeout=60) as resp:
+    req = Request(url, headers={
+        "User-Agent": "x4-wallpapers/1.0 (https://github.com/x4-wallpapers/x4-wallpapers; wallpaper store pipeline)",
+    })
+    with urlopen(req, timeout=60) as resp:
         return resp.read()
 
 
