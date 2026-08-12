@@ -1,4 +1,5 @@
 {
+  "name": "X4 Wallpaper Store",
   "wallpapers": [
     {
       "id": "a-mother-how-odd-gordon-ross-lccn2011648850-restored",
@@ -7,8 +8,9 @@
       "license": "Public domain",
       "attribution": "© Ross, Gordon, 1873-1946, artist, Public domain",
       "category": "general",
-      "source": "File:\"A mother! How odd!\" - Gordon Ross. LCCN2011648850-restored.jpg",
-      "source_url": "https://upload.wikimedia.org/wikipedia/commons/c/c9/%22A_mother%21_How_odd%21%22_-_Gordon_Ross._LCCN2011648850-restored.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+      "bw": "wallpapers/bw/a-mother-how-odd-gordon-ross-lccn2011648850-restored.bmp",
+      "gray": "wallpapers/gray/a-mother-how-odd-gordon-ross-lccn2011648850-restored.bmp",
+      "thumb": "wallpapers/thumbs/a-mother-how-odd-gordon-ross-lccn2011648850-restored.png"
     },
     {
       "id": "a-sure-horse-for-the-first-money-lccn2002695764-restored",
@@ -17,8 +19,9 @@
       "license": "Public domain",
       "attribution": "© Popular Graphic Arts, Public domain",
       "category": "general",
-      "source": "File:\"A sure horse for the first money\" LCCN2002695764-restored.jpg",
-      "source_url": "https://upload.wikimedia.org/wikipedia/commons/3/35/%22A_sure_horse_for_the_first_money%22_LCCN2002695764-restored.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+      "bw": "wallpapers/bw/a-sure-horse-for-the-first-money-lccn2002695764-restored.bmp",
+      "gray": "wallpapers/gray/a-sure-horse-for-the-first-money-lccn2002695764-restored.bmp",
+      "thumb": "wallpapers/thumbs/a-sure-horse-for-the-first-money-lccn2002695764-restored.png"
     },
     {
       "id": "everything-is-going-to-be-alright-artwork-christchurch-art-gallery-christchurch-new-zealand",
@@ -27,8 +30,9 @@
       "license": "CC BY-SA 4.0",
       "attribution": "© Michal Klajban, CC BY-SA 4.0",
       "category": "general",
-      "source": "File:\"Everything is Going to be Alright\" artwork, Christchurch Art Gallery, Christchurch, New Zealand.jpg",
-      "source_url": "https://upload.wikimedia.org/wikipedia/commons/2/21/%22Everything_is_Going_to_be_Alright%22_artwork%2C_Christchurch_Art_Gallery%2C_Christchurch%2C_New_Zealand.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+      "bw": "wallpapers/bw/everything-is-going-to-be-alright-artwork-christchurch-art-gallery-christchurch-new-zealand.bmp",
+      "gray": "wallpapers/gray/everything-is-going-to-be-alright-artwork-christchurch-art-gallery-christchurch-new-zealand.bmp",
+      "thumb": "wallpapers/thumbs/everything-is-going-to-be-alright-artwork-christchurch-art-gallery-christchurch-new-zealand.png"
     },
     {
       "id": "horas-de-chumbo-by-rui-chafes-parque-das-na-es-lisbon-portugal-julesvernex2-2",
@@ -37,8 +41,9 @@
       "license": "CC BY-SA 4.0",
       "attribution": "© Jules Verne Times Two, CC BY-SA 4.0",
       "category": "general",
-      "source": "File:\"Horas de Chumbo\", by Rui Chafes, Parque das Nações, Lisbon, Portugal julesvernex2-2.jpg",
-      "source_url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/%22Horas_de_Chumbo%22%2C_by_Rui_Chafes%2C_Parque_das_Na%C3%A7%C3%B5es%2C_Lisbon%2C_Portugal_julesvernex2-2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+      "bw": "wallpapers/bw/horas-de-chumbo-by-rui-chafes-parque-das-na-es-lisbon-portugal-julesvernex2-2.bmp",
+      "gray": "wallpapers/gray/horas-de-chumbo-by-rui-chafes-parque-das-na-es-lisbon-portugal-julesvernex2-2.bmp",
+      "thumb": "wallpapers/thumbs/horas-de-chumbo-by-rui-chafes-parque-das-na-es-lisbon-portugal-julesvernex2-2.png"
     },
     {
       "id": "photograph-made-from-b-17-flying-fortress-of-the-8th-aaf-bomber-command-on-31-dec-when-they-attacked-the-vital-cam-bal-nara-535712",
@@ -47,8 +52,9 @@
       "license": "Public domain",
       "attribution": "© Unknown authorUnknown author or not provided, Public domain",
       "category": "general",
-      "source": "File:\"Photograph made from B-17 Flying Fortress of the 8th AAF Bomber Command on 31 Dec. when they attacked the vital CAM bal - NARA - 535712.jpg",
-      "source_url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/%22Photograph_made_from_B-17_Flying_Fortress_of_the_8th_AAF_Bomber_Command_on_31_Dec._when_they_attacked_the_vital_CAM_bal_-_NARA_-_535712.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original"
+      "bw": "wallpapers/bw/photograph-made-from-b-17-flying-fortress-of-the-8th-aaf-bomber-command-on-31-dec-when-they-attacked-the-vital-cam-bal-nara-535712.bmp",
+      "gray": "wallpapers/gray/photograph-made-from-b-17-flying-fortress-of-the-8th-aaf-bomber-command-on-31-dec-when-they-attacked-the-vital-cam-bal-nara-535712.bmp",
+      "thumb": "wallpapers/thumbs/photograph-made-from-b-17-flying-fortress-of-the-8th-aaf-bomber-command-on-31-dec-when-they-attacked-the-vital-cam-bal-nara-535712.png"
     }
   ]
 }
